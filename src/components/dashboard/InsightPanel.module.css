@@ -1,0 +1,187 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--surface-color);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+
+/* ========== Header ========== */
+.header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1.15rem;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+}
+
+.title {
+  font-weight: 650;
+  font-size: 0.88rem;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+/* ========== Chat Area ========== */
+.chatArea {
+  flex: 1;
+  padding: 1.15rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.message {
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+  animation: fadeInUp 0.3s ease-out;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.avatar {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.04);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  border: 1px solid var(--border-color);
+}
+
+/* ========== User Messages ========== */
+.userMsg {
+  flex-direction: row-reverse;
+}
+.userMsg .avatar {
+  border-color: rgba(99, 102, 241, 0.3);
+  background: var(--primary-glow);
+  color: var(--primary-light);
+}
+.userMsg .bubble {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  color: white;
+  border-top-right-radius: 4px;
+}
+
+/* ========== Model Messages ========== */
+.modelMsg .bubble {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  border-top-left-radius: 4px;
+}
+
+.bubble {
+  padding: 0.65rem 0.9rem;
+  border-radius: var(--radius-md);
+  font-size: 0.82rem;
+  line-height: 1.65;
+  max-width: 88%;
+  word-wrap: break-word;
+}
+
+/* ========== Markdown AI Responses ========== */
+.markdownContent {
+  display: block;
+}
+.markdownContent :global(h3.ai-heading),
+.markdownContent :global(h4.ai-heading) {
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0.6rem 0 0.3rem;
+  line-height: 1.3;
+}
+.markdownContent :global(h3.ai-heading) { font-size: 0.88rem; }
+.markdownContent :global(h4.ai-heading) { font-size: 0.82rem; color: var(--primary-light); }
+.markdownContent :global(strong) {
+  color: white;
+  font-weight: 700;
+}
+.markdownContent :global(.ai-bullet) {
+  padding-left: 0.5rem;
+  margin: 0.15rem 0;
+  color: var(--text-secondary);
+}
+
+/* ========== Thinking State ========== */
+.thinkingBubble {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-muted);
+  font-style: italic;
+  padding: 0.5rem 0.9rem;
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  100% { transform: rotate(360deg); }
+}
+
+/* ========== Input Form ========== */
+.inputForm {
+  display: flex;
+  padding: 0.85rem;
+  border-top: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  gap: 0.5rem;
+}
+
+.inputField {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-color);
+  padding: 0.6rem 0.85rem;
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: 0.82rem;
+  font-family: inherit;
+  outline: none;
+  transition: all var(--transition-fast);
+}
+.inputField:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px var(--primary-glow);
+}
+.inputField::placeholder {
+  color: var(--text-muted);
+}
+
+.sendBtn {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  color: white;
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-smooth);
+  box-shadow: 0 0 10px var(--primary-glow);
+  flex-shrink: 0;
+}
+.sendBtn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 0 18px var(--primary-glow-strong);
+}
+.sendBtn:disabled {
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: none;
+  color: var(--text-muted);
+  cursor: not-allowed;
+}
