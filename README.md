@@ -37,8 +37,13 @@
 *   **Dynamic Visuals:** The UI, sub-headers, and charts completely redraw and adapt their context based on the current active ministry.
 
 ### 🔒 Secure Role-Based Access Control (RBAC)
-*   **Admin & Viewer Roles:** Viewers and Admins experience different UI permissions managed efficiently via React Context and Zustand state.
+*   **Strict Security:** The `admin` role is rigidly assigned via context to specific authorized emails only, preventing unauthorized access. 
+*   **Admin Utilities:** Authorized admins experience exclusive UI capabilities, such as destructive DataGrid actions (Delete) natively built into the TanStack Virtualized rows.
 *   **Supabase Authentication:** Secure, industry-standard authentication flow handling session management natively through lightweight UI elements.
+
+### 📊 KPI Dashboards & Regional Heatmaps
+*   **Dynamic Visualizations:** Integrated Recharts to render real-time Funding Trends and Regional Allocation Breakdowns (Top 5 States).
+*   **Algorithmic Summaries:** Instant computation of Efficiency Metrics and Beneficiaries Impacted based purely on active user filter combinations.
 
 ### ⌨️ Command Palette (Cmd+K)
 *   **Power User Navigation:** Hit `Cmd + K` or `Ctrl + K` to bring up a Spotlight-style search bar. 
@@ -110,16 +115,13 @@ Deploying to Vercel is seamless:
 
 ---
 
-## 👤 About the Developer / Project
+## 👤 About the Developer
 
-> **👇 FILL THIS SECTION OUT BEFORE SHARING 👇**  
-> *Tell visitors who you are, what hackathon this is for (if applicable), and what inspired you to build it!*
-
-*   **Developer:** [Your Name / Namya]
-*   **Socials:** [GitHub / LinkedIn / Twitter]
-*   **Purpose:** Built for [Name of Hackathon / Personal Portfolio / Final Year Project] to solve the problem of [briefly explain why you decided to make this, e.g., "making public data transparency intuitive and lightning fast"].
-*   **Challenges Overcome:** [Write 1-2 sentences about a tough technical challenge you solved, e.g., "Implementing smooth infinite scrolling for 100,000 JSON records using TanStack Virtual despite intense DOM sizes" or "Syncing the server-side AI prompt seamlessly with active frontend table filters."]
-*   **Future Scope:** [What features do you want to add next? E.g., Exporting generated AI reports to PDF, creating live API connections to data.gov.in, adding more interactive charts...]
+*   **Developer:** Namya Jaiswal
+*   **Socials:** [GitHub: namyaJ](https://github.com/namyaJ)
+*   **Purpose:** Built as a comprehensive showcase of modern web architecture. The goal was to solve the widespread issue of clunky, unreadable public government data interfaces by introducing lightning-fast React virtualization and intelligent, LLM-powered data exploration.
+*   **Challenges Overcome:** One of the most significant architectural hurdles was maintaining 60FPS fluid scrolling while rendering over 100,000 dense JSON records. Using `TanStack Virtual`, I successfully decoupled the DOM node count from the dataset size, allowing seamless fuzzy-search and filtering. Additionally, creating a completely dynamic multi-tenant UI layout capable of instantly swapping themes and icons based on Context API state without layout shifts was incredibly rewarding.
+*   **Future Scope:** Implementing real-time WebSockets for live data ingestion, expanding the Recharts dashboard with interactive geospatial heatmaps of India, and exporting AI summaries directly to PDF formats.
 
 ---
 
