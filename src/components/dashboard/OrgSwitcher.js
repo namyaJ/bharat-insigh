@@ -1,7 +1,13 @@
 'use client';
 import { useTenant } from '@/contexts/TenantContext';
 import styles from './OrgSwitcher.module.css';
-import { Building2 } from 'lucide-react';
+import { Activity, Tractor, Landmark, Building2 } from 'lucide-react';
+
+const TENANT_ICONS = {
+  health: Activity,
+  agriculture: Tractor,
+  finance: Landmark,
+};
 
 export function OrgSwitcher() {
   const { tenant, setTenant } = useTenant();
@@ -10,9 +16,11 @@ export function OrgSwitcher() {
     setTenant(e.target.value);
   };
 
+  const IconComponent = TENANT_ICONS[tenant] || Building2;
+
   return (
     <div className={styles.switcherWrapper}>
-      <Building2 size={16} color="var(--text-secondary)" />
+      <IconComponent size={16} color="var(--text-secondary)" />
       <select 
         className={styles.select} 
         value={tenant} 

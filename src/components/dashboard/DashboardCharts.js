@@ -6,7 +6,7 @@ import {
   XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer,
   ComposedChart, Area, Line, Legend
 } from 'recharts';
-import { TrendingUp, BarChart3, PieChart as PieIcon, IndianRupee, MapPin, Activity, Info } from 'lucide-react';
+import { TrendingUp, BarChart3, PieChart as PieIcon, IndianRupee, MapPin, Activity, Info, Users } from 'lucide-react';
 import styles from './DashboardCharts.module.css';
 
 // --- Custom Plain English Tooltips ---
@@ -88,12 +88,24 @@ export function DashboardCharts({ data }) {
       name: key, value: deptFunding[key]
     })).sort((a, b) => b.value - a.value);
 
-    // Year-wise trend (Funding + Beneficiaries)
+    // Year-wise trend (Funding + Beneficiaries) and state metrics
     const yearMetrics = {};
+    const stateMetrics = {};
+    let totalBeneficiaries = 0;
+
     data.forEach(r => {
+      // Year grouping
       if (!yearMetrics[r.year]) yearMetrics[r.year] = { funding: 0, beneficiaries: 0 };
       yearMetrics[r.year].funding += r.funding_crores;
-      if (r.beneficiaries) yearMetrics[r.year].beneficiaries += r.beneficiaries;
+      if (r.beneficiaries) {
+        yearMetrics[r.year].beneficiaries += r.beneficiaries;
+        totalBeneficiaries += r.beneficiaries;
+      }
+      
+      // State grouping
+      if (!stateMetrics[r.state]) stateMetrics[r.state] = { funding: 0, beneficiaries: 0 };
+      stateMetrics[r.state].funding += r.funding_crores;
+      if (r.beneficiaries) stateMetrics[r.state].beneficiaries += r.beneficiaries;
     });
     
     const yearData = Object.keys(yearMetrics).sort().slice(-8).map(year => ({
@@ -102,6 +114,13 @@ export function DashboardCharts({ data }) {
       beneficiaries: yearMetrics[year].beneficiaries,
     }));
 
+    const topStatesList = Object.keys(stateMetrics)
+      .map(st => ({ name: st, funding: stateMetrics[st].funding, beneficiaries: stateMetrics[st].beneficiaries }))
+      .sort((a,b) => b.funding - a.funding)
+      .slice(0, 5);
+      
+    const topState = topStatesList.length > 0 ? topStatesList[0].name : '--';
+
     return {
       totalRows: data.length,
       totalFunding,
@@ -109,7 +128,10 @@ export function DashboardCharts({ data }) {
       uniqueStates,
       statusData,
       deptData,
-      yearData
+      yearData,
+      totalBeneficiaries,
+      topStatesList,
+      topState
     };
   }, [data]);
 
@@ -189,6 +211,28 @@ export function DashboardCharts({ data }) {
             <div className={styles.kpiSubLabel}>The average funds dedicated per project</div>
           </div>
         </div>
+        
+        {/* NEW CARDS */}
+        <div className={styles.kpiCard}>
+          <div className={styles.kpiIcon} style={{ background: 'rgba(56,189,248,0.15)', color: '#38bdf8' }}>
+            <Users size={20} />
+          </div>
+          <div className={styles.kpiInfo}>
+            <div className={styles.kpiValue}>{(stats.totalBeneficiaries / 10000000).toFixed(1)}Cr</div>
+            <div className={styles.kpiLabel}>Citizens Impacted</div>
+            <div className={styles.kpiSubLabel}>Total recorded beneficiaries</div>
+          </div>
+        </div>
+        <div className={styles.kpiCard}>
+          <div className={styles.kpiIcon} style={{ background: 'rgba(167,139,250,0.15)', color: '#a78bfa' }}>
+            <MapPin size={20} />
+          </div>
+          <div className={styles.kpiInfo}>
+            <div className={styles.kpiValue} style={{fontSize: '1.2rem', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden', maxWidth: '120px'}} title={stats.topState}>{stats.topState}</div>
+            <div className={styles.kpiLabel}>Top Focus Region</div>
+            <div className={styles.kpiSubLabel}>Highest cumulative funding</div>
+          </div>
+        </div>
       </div>
 
       {/* ===== High-Detail Charts ===== */}
@@ -255,8 +299,32 @@ export function DashboardCharts({ data }) {
           </div>
         </div>
 
+        {/* Regional Allocation BarChart */}
+        <div className={styles.chartCard} style={{ gridColumn: 'span 5' }}>
+          <div className={styles.chartHeaderBlock}>
+            <div className={styles.chartTitleRow}>
+              <MapPin size={16} className={styles.chartHeaderIcon} />
+              <h3 className={styles.chartTitle}>Regional Allocation Breakdown</h3>
+            </div>
+            <p className={styles.chartDescription}>
+              Top 5 states by funding allocation. This uncovers regional financial priorities.
+            </p>
+          </div>
+          <div className={styles.chartArea}>
+            <ResponsiveContainer width="100%" height={320}>
+              <BarChart data={stats.topStatesList} margin={{ top: 20, right: 30, left: -10, bottom: 25 }}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.05)" />
+                <XAxis dataKey="name" stroke="#475569" fontSize={11} interval={0} angle={-35} textAnchor="end" />
+                <YAxis stroke="#cbd5e1" fontSize={11} tickFormatter={(val) => `₹${(val/1000).toFixed(0)}k`} />
+                <RechartsTooltip cursor={{fill: 'rgba(255,255,255,0.03)'}} contentStyle={{backgroundColor: 'rgba(15,23,42,0.95)', borderColor: 'rgba(255,255,255,0.1)', borderRadius:'8px'}} itemStyle={{color:'white'}} />
+                <Bar dataKey="funding" name="Funding (Cr)" radius={[4, 4, 0, 0]} maxBarSize={45} fill="#f472b6" />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
         {/* Year Trend Composed Chart */}
-        <div className={styles.chartCard} style={{ gridColumn: 'span 12' }}>
+        <div className={styles.chartCard} style={{ gridColumn: 'span 7' }}>
           <div className={styles.chartHeaderBlock}>
             <div className={styles.chartTitleRow}>
               <TrendingUp size={16} className={styles.chartHeaderIcon} />

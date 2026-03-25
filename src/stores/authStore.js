@@ -7,14 +7,26 @@ const useAuthStore = create((set) => {
     const supabase = createClient();
     if (supabase) {
       supabase.auth.getSession().then(({ data: { session } }) => {
-        set({ user: session?.user ?? null, loading: false });
+        const adminEmail = 'namyajaiswal@gmail.com';
+        const isUserAdmin = session?.user?.email === adminEmail;
+        set({
+          user: session?.user ?? null,
+          role: isUserAdmin ? 'admin' : 'viewer',
+          loading: false
+        });
       });
       supabase.auth.onAuthStateChange((_event, session) => {
-        set({ user: session?.user ?? null, loading: false });
+        const adminEmail = 'namyajaiswal@gmail.com';
+        const isUserAdmin = session?.user?.email === adminEmail;
+        set({
+          user: session?.user ?? null,
+          role: isUserAdmin ? 'admin' : 'viewer',
+          loading: false
+        });
       });
     } else {
       // Demo mode
-      set({ user: { email: 'demo@govdata.in', id: 'demo' }, loading: false });
+      set({ user: { email: 'demo@govdata.in', id: 'demo' }, role: 'viewer', loading: false });
     }
   }
 
@@ -24,7 +36,6 @@ const useAuthStore = create((set) => {
     loading: true,
 
     setRole: (role) => set({ role }),
-    toggleRole: () => set((state) => ({ role: state.role === 'admin' ? 'viewer' : 'admin' })),
 
     signUp: async (email, password) => {
       const supabase = createClient();

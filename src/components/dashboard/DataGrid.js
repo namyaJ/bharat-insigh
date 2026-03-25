@@ -115,6 +115,10 @@ export function DataGrid({ data: rawData, onFilterChange }) {
     return result;
   }, [rawData, debouncedQuery, activeDepartment, activeState, activeYear, activeStatus]);
 
+  const filteredFunding = useMemo(() => {
+    return filteredData.reduce((sum, row) => sum + (row.funding_crores || 0), 0);
+  }, [filteredData]);
+
   // Notify parent of filter context
   useEffect(() => {
     if (onFilterChange) {
@@ -244,6 +248,9 @@ export function DataGrid({ data: rawData, onFilterChange }) {
           {debouncedQuery && <span className={styles.fuzzyTag}>fuzzy</span>}
           <span className={styles.rowCount}>{filteredData.length.toLocaleString()}</span>
           <span className={styles.rowLabel}> / {(rawData?.length || 0).toLocaleString()} rows</span>
+          <span style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', marginLeft: '0.5rem', fontWeight: '600' }}>
+            • ₹{(filteredFunding / 1000).toFixed(1)}k Cr Match
+          </span>
         </div>
       </div>
 
@@ -359,6 +366,7 @@ export function DataGrid({ data: rawData, onFilterChange }) {
                     {role === 'admin' && (
                       <div className={styles.cell} role="gridcell">
                         <button className={styles.editBtn}>Edit</button>
+                        <button className={styles.deleteBtn}>Delete</button>
                       </div>
                     )}
                   </div>

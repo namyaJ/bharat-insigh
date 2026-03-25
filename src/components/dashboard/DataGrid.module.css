@@ -281,6 +281,24 @@
   color: var(--primary-light);
 }
 
+/* ========== Delete Button ========== */
+.deleteBtn {
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-secondary);
+  padding: 0.3rem 0.65rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.7rem;
+  font-weight: 550;
+  transition: all var(--transition-fast);
+  border: 1px solid transparent;
+  margin-left: 0.35rem;
+}
+.deleteBtn:hover {
+  background: var(--error-glow);
+  border-color: var(--error-color);
+  color: #fca5a5;
+}
+
 /* ========== Shimmer Skeleton Loaders ========== */
 .skeletonContainer {
   padding: 1.25rem;

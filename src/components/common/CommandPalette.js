@@ -13,7 +13,6 @@ const ACTIONS = [
   { id: 'home', label: 'Go to Landing Page', icon: Home, group: 'Navigation', path: '/' },
   { id: 'login', label: 'Go to Login', icon: ArrowRight, group: 'Navigation', path: '/login' },
   { id: 'ask-ai', label: 'Ask AI Assistant', icon: Sparkles, group: 'Quick Actions', action: 'focus-ai' },
-  { id: 'toggle-role', label: 'Toggle Admin / Viewer Role', icon: Shield, group: 'Quick Actions', action: 'toggle-role' },
   { id: 'switch-health', label: 'Switch to Ministry of Health', icon: Users, group: 'Switch Organization', action: 'tenant-health' },
   { id: 'switch-agriculture', label: 'Switch to Ministry of Agriculture', icon: Users, group: 'Switch Organization', action: 'tenant-agriculture' },
   { id: 'switch-finance', label: 'Switch to Ministry of Finance', icon: Users, group: 'Switch Organization', action: 'tenant-finance' },
@@ -27,7 +26,6 @@ export function CommandPalette() {
   const inputRef = useRef(null);
   const resultsRef = useRef(null);
   const router = useRouter();
-  const toggleRole = useAuthStore(s => s.toggleRole);
   const signOut = useAuthStore(s => s.signOut);
   const setTenant = useTenantStore(s => s.setTenant);
 
@@ -78,8 +76,6 @@ export function CommandPalette() {
     setQuery('');
     if (action.path) {
       router.push(action.path);
-    } else if (action.action === 'toggle-role') {
-      toggleRole();
     } else if (action.action === 'sign-out') {
       signOut().then(() => router.push('/login'));
     } else if (action.action?.startsWith('tenant-')) {
@@ -87,7 +83,7 @@ export function CommandPalette() {
     } else if (action.action === 'focus-ai') {
       router.push('/dashboard');
     }
-  }, [router, toggleRole, signOut, setTenant]);
+  }, [router, signOut, setTenant]);
 
   // Keyboard navigation inside palette
   const handleKeyDown = useCallback((e) => {
