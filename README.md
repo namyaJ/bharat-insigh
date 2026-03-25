@@ -3,6 +3,8 @@
 
   <h1>🇮🇳 Bharat-Insight Analytics Platform</h1>
   <p><strong>A high-performance, multi-tenant public data analytics platform built to make exploring massive Indian government datasets (data.gov.in) fast, elegant, and intelligent.</strong></p>
+  
+  <h3>🚀 <a href="https://bharat-insight-sepia.vercel.app">Live Demo on Vercel</a></h3>
 </div>
 
 ---
